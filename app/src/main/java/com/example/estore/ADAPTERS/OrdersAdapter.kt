@@ -24,14 +24,12 @@ class OrdersAdapter(context: Context): ArrayAdapter<OrderHistory>(context, 0, Ar
         var item = getItem(position)
         Log.d("NEVEM", item.toString() )
         if(item != null){
-            view.price.text = sumPrice(item.storeItems).toString()
+            view.price.text = "Price: ${sumPrice(item.storeItems).toString()}"
 
-            view.status.text = item.status.staus
+            view.date.text = item.order.created_at.toString()
 
-            view.date.text = item.status.created_at.toString()
-
-            view.items.adapter = ArrayAdapter<String>(context,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, listItems(item.storeItems))
+            val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listItems(item.storeItems))
+            view.items.adapter = adapter
 
 
 
@@ -42,8 +40,8 @@ class OrdersAdapter(context: Context): ArrayAdapter<OrderHistory>(context, 0, Ar
         return view
     }
 
-    fun listItems(storeItemList: List<HistoryOrderItem>): List<String>{
-        var list = ArrayList<String>()
+    fun listItems(storeItemList: List<HistoryOrderItem>): ArrayList<String>{
+        val list = ArrayList<String>()
         for(item in storeItemList){
             list.add("${item.name}    ${item.pivot.primary_price} X ${item.pivot.quantity} ")
         }

@@ -60,7 +60,9 @@
         <EditText
             android:inputType="number"
             android:layout_width="90dp"
+            android:text="1"
             android:hint="quantity"
+            android:id="@+id/quantity"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

@@ -37,7 +37,7 @@ data class Order(var orderItems: List<OrderItem>)
 data class HistoryPivot(var order_id: Int, var store_item_id: Int, var quantity: Int, var primary_price: Float)
 
 data class HistoryOrderItem(var id: Int, var price: Float, var name: String, var description: String, var pivot: HistoryPivot)
-data class OrderStatus(var created_at: Date, var staus: String)
-data class OrderHistory(var storeItems: List<HistoryOrderItem>, var status: OrderStatus)
+data class OrderStatus(var created_at: Date)
+data class OrderHistory(var storeItems: List<HistoryOrderItem>, var order: OrderStatus)
 
 data class Orders(var orders: List<OrderHistory>)

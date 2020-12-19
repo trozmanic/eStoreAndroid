@@ -5,19 +5,18 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
+
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.estore.ADAPTERS.ImagesAdapter
-import com.example.estore.ADAPTERS.ItemsAdapter
+
 import com.example.estore.SERVICES.CartService
 import com.example.estore.SERVICES.ItemService
 import kotlinx.android.synthetic.main.activity_item.*
 import kotlinx.android.synthetic.main.activity_item.name
 import kotlinx.android.synthetic.main.activity_item.price
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_cart.*
-import kotlinx.coroutines.*
+import kotlinx.android.synthetic.main.activity_item.*
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -72,37 +71,40 @@ class ItemActivity : AppCompatActivity(), Callback<Item> {
         })
 
         toCart.setOnClickListener {
-            val koliko: Int = 1
+
             //Log.d(tag, quantity.text.toString())
-            if (true) {
-                val listItems = ArrayList<CartItemUpdate>()
-                for (item in shoppingCart) {
-                    listItems.add(CartItemUpdate(id = item.pivot.store_item_id, quantity = item.pivot.quantity))
-                }
+            if(quantity.text.isNotEmpty()) {
+                var koliko: Int = quantity.text.toString().toInt()
+                if (koliko != null) {
+                    val listItems = ArrayList<CartItemUpdate>()
+                    for (item in shoppingCart) {
+                        listItems.add(CartItemUpdate(id = item.pivot.store_item_id, quantity = item.pivot.quantity))
+                    }
 
-                listItems.add(CartItemUpdate(id = storeItem.id, quantity = koliko))
-                CartService.instance.updateCart("Bearer $token", ShoppingCart(shoppingCart = listItems)).enqueue(object :
-                Callback<List<CartItem>>{
-                    override fun onResponse(call: Call<List<CartItem>>, response: Response<List<CartItem>>) {
-                        if(response.isSuccessful){
-                            Toast.makeText(application, "Item added to cart.", Toast.LENGTH_LONG).show()
-                        } else{
-                            val errorMessage = try {
-                                "An error occurred: ${response.errorBody()?.string()}"
-                            } catch (e: java.io.IOException) {
-                                "An error occurred: error while decoding the error message."
+                    listItems.add(CartItemUpdate(id = storeItem.id, quantity = koliko))
+                    CartService.instance.updateCart("Bearer $token", ShoppingCart(shoppingCart = listItems)).enqueue(object :
+                            Callback<List<CartItem>> {
+                        override fun onResponse(call: Call<List<CartItem>>, response: Response<List<CartItem>>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(application, "Item added to cart.", Toast.LENGTH_LONG).show()
+                            } else {
+                                val errorMessage = try {
+                                    "An error occurred: ${response.errorBody()?.string()}"
+                                } catch (e: java.io.IOException) {
+                                    "An error occurred: error while decoding the error message."
+                                }
+
+                                android.widget.Toast.makeText(application, errorMessage, android.widget.Toast.LENGTH_SHORT).show()
+                                android.util.Log.e(tag, errorMessage)
                             }
-
-                            android.widget.Toast.makeText(application, errorMessage, android.widget.Toast.LENGTH_SHORT).show()
-                            android.util.Log.e(tag, errorMessage)
                         }
-                    }
 
-                    override fun onFailure(call: Call<List<CartItem>>, t: Throwable) {
-                        Log.w(tag, "Error: ${t.message}", t)
-                    }
+                        override fun onFailure(call: Call<List<CartItem>>, t: Throwable) {
+                            Log.w(tag, "Error: ${t.message}", t)
+                        }
 
-                })
+                    })
+                }
             }
         }
     }

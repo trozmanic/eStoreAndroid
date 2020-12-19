@@ -34,8 +34,8 @@ class UserEditFragment: Fragment(), Callback<Any> {
 
         update.setOnClickListener {
             val nameV = if (TextUtils.isEmpty(name.text.toString())) null else name.text.toString()
-            val lastnameV = if (TextUtils.isEmpty(lastname.text.toString())) null else name.text.toString()
-            val passwordV = if (TextUtils.isEmpty(password.text.toString())) null else name.text.toString()
+            val lastnameV = if (TextUtils.isEmpty(lastname.text.toString())) null else lastname.text.toString()
+            val passwordV = if (TextUtils.isEmpty(password.text.toString())) null else lastname.text.toString()
 
             val user = UserUpdate(name = nameV, lastname = lastnameV, pasword = passwordV )
             Log.d(tag, user.toString())
