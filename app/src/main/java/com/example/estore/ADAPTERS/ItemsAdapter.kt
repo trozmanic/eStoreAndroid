@@ -41,7 +41,7 @@ class ItemsAdapter(context: Context): ArrayAdapter<MainItem>(context, 0, ArrayLi
             }
         }
 
-        view.price.text = item?.price.toString()
+        view.price.text = "${item?.price.toString()} €"
         view.name.text = item?.name.toString()
 
         return view
